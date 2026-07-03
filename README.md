@@ -179,8 +179,6 @@ Tests cover the pure logic (spike/trend detection, gap detection, price validati
 - `producer/producers/stocks_producers.py` — not yet implemented (see TODO in file)
 - `spark_streaming/silver/transformations.py` (windowed moving averages) — written but not wired into any job yet; planned for a future Silver+ aggregation layer
 - The local gold scraper depends on a third-party site's HTML structure and will break if that page changes
-- No Dead Letter Queue yet for malformed Kafka messages
-- No schema registry — producer/consumer schema agreement is implicit, not enforced
 
 ---
 
