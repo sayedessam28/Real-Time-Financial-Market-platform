@@ -147,7 +147,6 @@ financial-market-platform/
 ├── warehouse/                   # Iceberg table storage (gitignored, regenerated)
 ├── checkpoints/                 # Spark streaming checkpoints (gitignored)
 ├── docker-compose.yml
-├── run_spark.sh
 └── requirements.txt
 ```
 
