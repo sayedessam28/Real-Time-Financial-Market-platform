@@ -1,0 +1,516 @@
+{
+  "title": "Financial Market Overview",
+  "uid": "financial-market-overview",
+  "timezone": "Africa/Cairo",
+  "refresh": "30s",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 101,
+      "title": "XAU/USD \u2014 Latest",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "cache_ttl": 0,
+          "url": "http://dashboard-api:8000/prices/latest?symbol=XAU/USD",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "price",
+              "text": "Price",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "title": "USD/EGP \u2014 Latest",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "cache_ttl": 0,
+          "url": "http://dashboard-api:8000/prices/latest?symbol=USD/EGP",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "price",
+              "text": "Price",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "title": "XAU/EGP Local \u2014 Latest",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "parser": "backend",
+          "cache_ttl": 0,
+          "url": "http://dashboard-api:8000/prices/latest?symbol=XAU/EGP_LOCAL",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "price",
+              "text": "Price",
+              "type": "number"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "XAU/USD Price History",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/prices/history?symbol=XAU/USD&hours=24",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "time",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "price",
+              "text": "XAU/USD",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "XAU/EGP Local Price History",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/prices/history?symbol=XAU/EGP_LOCAL&hours=24",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "time",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "price",
+              "text": "XAU/EGP Local",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Gold Gap History (EGP)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/alerts/gap-history?hours=48",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "created_at",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "gap_egp",
+              "text": "Gap (EGP)",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Alert Counts by Type (24h)",
+      "type": "barchart",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/alerts/counts?hours=24",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "alert_type",
+              "text": "Alert Type",
+              "type": "string"
+            },
+            {
+              "selector": "severity",
+              "text": "Severity",
+              "type": "string"
+            },
+            {
+              "selector": "count",
+              "text": "Count",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Recent Alerts",
+      "type": "table",
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/alerts/recent?hours=24&limit=100",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "created_at",
+              "text": "Time",
+              "type": "timestamp"
+            },
+            {
+              "selector": "alert_type",
+              "text": "Type",
+              "type": "string"
+            },
+            {
+              "selector": "severity",
+              "text": "Severity",
+              "type": "string"
+            },
+            {
+              "selector": "symbol",
+              "text": "Symbol",
+              "type": "string"
+            },
+            {
+              "selector": "message",
+              "text": "Message",
+              "type": "string"
+            },
+            {
+              "selector": "current_price",
+              "text": "Price",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Bronze \u2192 Silver Lag (seconds)",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 29
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/health/lag",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "bronze_to_silver_lag_seconds",
+              "text": "Lag (s)",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 150
+              },
+              {
+                "color": "red",
+                "value": 300
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Row Counts per Layer",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 29
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/health/row-counts",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "bronze",
+              "text": "Bronze",
+              "type": "number"
+            },
+            {
+              "selector": "silver",
+              "text": "Silver",
+              "type": "number"
+            },
+            {
+              "selector": "gold",
+              "text": "Gold",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Feed Freshness",
+      "type": "table",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 29
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "Dashboard API"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://dashboard-api:8000/health/feeds",
+          "url_options": {
+            "method": "GET",
+            "data": ""
+          },
+          "root_selector": "",
+          "columns": [
+            {
+              "selector": "symbol",
+              "text": "Symbol",
+              "type": "string"
+            },
+            {
+              "selector": "age_seconds",
+              "text": "Age (s)",
+              "type": "number"
+            }
+          ],
+          "parser": "backend",
+          "cache_ttl": 0
+        }
+      ]
+    }
+  ]
+}

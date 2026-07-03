@@ -1,0 +1,16 @@
+kafka-python==2.0.2
+
+requests>=2.31
+beautifulsoup4>=4.12
+
+pyspark==3.5.1
+
+python-dotenv>=1.0
+
+pytz>=2024.1
+
+duckdb>=0.10
+
+pytest>=8.0
+black>=24.0
+flake8>=7.0

@@ -1,0 +1,11 @@
+# Auto-provisions the Infinity (JSON API) datasource pointing at dashboard-api.
+# Grafana picks this up automatically on container start — no manual UI setup.
+apiVersion: 1
+
+datasources:
+  - uid: dashboard-api
+    name: dashboard-api
+    type: yesoreyeram-infinity-datasource
+    access: proxy
+    isDefault: true
+    url: http://dashboard-api:8000

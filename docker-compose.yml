@@ -1,0 +1,110 @@
+services:
+  # ── Kafka (KRaft mode — no Zookeeper needed) ──────────────────
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9094,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    restart: always
+
+  kafka-init:
+    image: apache/kafka:latest
+    container_name: kafka-init
+    depends_on:
+      - kafka
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "sleep 10 && /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic market_prices --partitions 1 --replication-factor 1"
+    restart: "no"
+
+  # ── Postgres ───────────────────────────────────────────────────
+  # Currently unused by the pipeline itself (Iceberg/Parquet is the
+  # actual store). Kept available for future use (e.g. a metadata
+  # catalog or an app that needs relational storage).
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: financial_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  # ── Spark standalone cluster ──────────────────────────────────
+  # NOTE: not currently used by run_spark.sh (which runs Spark in
+  # local[*] mode inside the venv on the host). These containers exist
+  # for future use if jobs are submitted to a real cluster instead of
+  # running locally. If you don't plan to use a Spark cluster, you can
+  # comment these two services out to save ~1GB of RAM.
+  spark-master:
+    image: apache/spark:3.5.1
+    container_name: spark-master
+    hostname: spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    ports:
+      - "7077:7077"
+      - "9090:8080"
+    restart: always
+    volumes:
+      - ./:/opt/project
+
+  spark-worker:
+    image: apache/spark:3.5.1
+    container_name: spark-worker
+    hostname: spark-worker
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
+    restart: always
+    volumes:
+      - ./:/opt/project
+
+  # ── Dashboard API ──────────────────────────────────────────────
+  # Reads the Iceberg warehouse (Parquet files) via DuckDB — no Spark,
+  # no JVM. Mounts the warehouse folder read-only.
+  dashboard-api:
+    build: ./dashboard_api
+    container_name: dashboard-api
+    environment:
+      ICEBERG_WAREHOUSE: /warehouse
+    volumes:
+      - ./warehouse:/warehouse:ro
+    mem_limit: 256m
+    ports:
+      - "8000:8000"
+
+  # ── Grafana ────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:11.6.3
+    container_name: grafana
+    depends_on:
+      - dashboard-api
+    environment:
+      GF_SECURITY_ADMIN_USER:     admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      # Pre-install the JSON API datasource plugin (Infinity) on first boot
+      GF_INSTALL_PLUGINS: yesoreyeram-infinity-datasource
+    mem_limit: 384m
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./dashboard_api/grafana_provisioning:/etc/grafana/provisioning
+
+volumes:
+  postgres_data:
+  grafana-data:

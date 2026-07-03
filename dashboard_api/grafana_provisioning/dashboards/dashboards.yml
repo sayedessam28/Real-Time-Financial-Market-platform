@@ -1,0 +1,12 @@
+# Tells Grafana to auto-load any .json dashboard files placed in this folder.
+apiVersion: 1
+
+providers:
+  - name: "Financial Market Dashboards"
+    orgId: 1
+    folder: ""
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    options:
+      path: /etc/grafana/provisioning/dashboards
